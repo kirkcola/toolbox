@@ -1,0 +1,17 @@
+# Project
+/dist
+/coverage
+
+# Deps
+node_modules
+
+# macOS
+.DS_Store
+
+# log file
+yarn-error.log
+
+# env file
+/.env
+
+/.vscode/launch.json

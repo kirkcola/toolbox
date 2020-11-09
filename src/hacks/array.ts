@@ -8,10 +8,11 @@ declare global {
      * e.g:
      *
      * ```ts
-     * [1, 2, 3].insert(3, 4) === [1,2,3,4]
+     * [1, 2, 3].insert(3, 4) === [1, 2, 3, 4]
+     * [1, 2, 3].insert(3, [4, 5, 6]) === [1, 2, 3, 4, 5, 6]
      * ```
      */
-    insert(index: number, element: T): T[];
+    insert(index: number, element: T | T[]): T[];
     /**
      * Remove elements from an array, returns a new array
      *
@@ -29,13 +30,22 @@ declare global {
 }
 
 export default (function () {
-  Array.prototype.insert = function <T>(index: number, element: T) {
-    return [...this.slice(0, Number(index)), element, ...this.slice(Number(index))];
+  Array.prototype.insert = function <T>(index: number, element: T | T[]) {
+    return [
+      ...this.slice(0, Number(index)),
+      ...[].concat(element),
+      ...this.slice(Number(index)),
+    ];
   };
 
   Array.prototype.remove = function (index: number, length?: number) {
-    const clone = this.slice(0);
-    clone.splice(Number(index), length || 1);
+    const $index = Number(index);
+    const $arrMaxPos = this.length - 1;
+    const clone = this.slice();
+    clone.splice(
+      $index <= $arrMaxPos ? $index : $arrMaxPos,
+      length || 1
+    );
     return clone;
   };
 })();

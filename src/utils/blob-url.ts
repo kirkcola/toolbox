@@ -17,7 +17,6 @@ export async function dataUrlToBlob(dataUrl: string, type?: string) {
   const binStr = atob(data);
   const len = binStr.length;
   const arr = new Uint8Array(len);
-
   for (let i = 0; i < len; i++) {
     arr[i] = binStr.charCodeAt(i);
   }

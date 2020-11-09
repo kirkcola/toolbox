@@ -1,3 +1,5 @@
+import "./array";
+
 /**
  * Encode standard 36-char UUID to 22-char
  *
@@ -10,9 +12,10 @@
  */
 export function encode(uuid: string) {
   return btoa(
-    String.fromCharCode(
-      ...new Uint8Array(
-        (uuid.replace(/-/g, "").match(/[\da-f]{2}/gi) || []).map(h =>
+    String.fromCharCode.apply(
+      null,
+      new Uint8Array(
+        (uuid.replace(/-/g, "").match(/[\da-f]{2}/gi) || []).map((h) =>
           parseInt(h, 16)
         )
       )
@@ -24,17 +27,11 @@ export function encode(uuid: string) {
 }
 
 /**
- * Decode compressed UUID to the original
+ * Decode compressed UUID
  */
 export function decode(b64: string) {
-  return atob(b64.replace(/-/g, "+").replace(/_/g, "/"))
-    .split("")
-    .map(s =>
-      s
-        .charCodeAt(0)
-        .toString(16)
-        .padStart(2, "0")
-    )
+  return Array.from(atob(b64.replace(/-/g, "+").replace(/_/g, "/")))
+    .map((s) => s.charCodeAt(0).toString(16).padStart(2, "0"))
     .insert(4, "-")
     .insert(7, "-")
     .insert(10, "-")
